@@ -1,0 +1,302 @@
+
+ot> setenv fdt_addr_r 0x00000100
+U-Boot                     
+U-Boot> set
+  setcurs setenv setexpr
+U-Boot> sete
+  setenv setexpr
+U-Boot> setenv pxefile_addr_r 0x00100000
+U-Boot> setenv kernel_addr_r 0x01000000 
+U-Boot> setenv scriptaddr 0x02000000   
+U-Boot> printenv ramdisk_addr_r
+ramdisk_addr_r=0x02100000
+U-Boot> 
+ramdisk_addr_r=0x02100000
+U-Boot> 
+ramdisk_addr_r=0x02100000
+U-Boot>                        
+ramdisk_addr_r=0x02100000
+U-Boot> 
+ramdisk_addr_r=0x02100000
+U-Boot> printenv my_kernel
+## Error: "my_kernel" not defined
+U-Boot> setenv bootargs "earlyprintk console=ttyAMA0 root=/dev/mmcblk0p2 rootwait noinitrd "             
+U-Boot> printenv bo
+  board board_name board_rev board_revision boltargs boot_a_script
+  boot_efi_binary boot_extlinux boot_net_usb_start boot_prefixes
+  boot_script_dhcp boot_targets bootcmd bootcmd_dhcp bootcmd_mmc0 bootcmd_pxe
+  bootcmd_usb0 bootdelay ...
+U-Boot> printenv bootargs 
+bootargs=earlyprintk console=ttyAMA0 root=/dev/mmcblk0p2 rootwait noinitrd 
+U-Boot> echo $rootstype   
+
+U-Boot> echo $rootfstype
+
+U-Boot> echo rootstype=ext4
+rootstype=ext4
+U-Boot> setenv rootstype=ext4
+## Error: illegal character '='in variable name "rootstype=ext4"
+U-Boot> setenv bootargs "earlyprintk console=ttyAMA0 root=/dev/mmcblk0p2 rootfstype=ex4 rootwait noinitrd "
+U-Boot> saveenv 
+Saving Environment to FAT...
+writing uboot.env
+done
+U-Boot> printenv bootargs 
+bootargs=earlyprintk console=ttyAMA0 root=/dev/mmcblk0p2 rootfstype=ex4 rootwait noinitrd 
+U-Boo mmc dev 0            
+switch to partitions #0, OK
+mmc0 is current device
+U-Boot> fatload mmc 0:1 ${kernel_addr_r} zImage
+reading zImage
+** Unable to read file zImage **
+U-Boot> fatload mmc 0:1 ${kernel_addr_r} kernel-img
+reading kernel-img
+** Unable to read file kernel-img **
+U-Boot> fatload mmc 0:1 ${kernel_addr_r} kernel.img
+reading kernel.img
+4128744 bytes read in 308 ms (12.8 MiB/s)
+U-Boot> fatload mmc 0:1 ${fdt_addr_r} ${fdtfile}   
+reading bcm2708-rpi-b.dtb
+11640 bytes read in 19 ms (597.7 KiB/s)
+U-Boot> booz ${kernel_addr_r} - ${fdt_addr_r}
+Unknown command 'booz' - try 'help'
+U-Boot> bootz ${kernel_addr_r} - ${fdt_addr_r}
+Kernel image @ 0x1000000 [ 0x000000 - 0x3efee0 ]
+## Flattened Device Tree blob at 00000100
+   Booting using the fdt blob at 0x000100
+   Using Device Tree in place at 00000100, end 00005e77
+Using machid 0xc42 from environment
+
+Starting kernel ...
+
+Uncompressing Linux... done, booting the kernel.
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Initializing cgroup subsys cpuset
+[    0.000000] Initializing cgroup subsys cpu
+[    0.000000] Initializing cgroup subsys cpuacct
+[    0.000000] Linux version 4.4.8 (prityaa@prityaa) (gcc version 4.8.3 20140106 (prerelease) (crosstool-NG linaro-1.13.1-4.8-2014.01 - Linaro GCC 207
+[    0.000000] CPU: ARMv6-compatible processor [410fb767] revision 7 (ARMv7), cr=00c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT nonaliasing instruction cache
+[    0.000000] Machine model: Raspberry Pi Model B
+[    0.000000] cma: Reserved 8 MiB at 0x1b800000
+[    0.000000] Memory policy: Data cache writeback
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 113680
+[    0.000000] Kernel command line: earlyprintk console=ttyAMA0 root=/dev/mmcblk0p2 rootfstype=ex4 rootwait noinitrd 
+[    0.000000] PID hash table entries: 2048 (order: 1, 8192 bytes)
+[    0.000000] Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+[    0.000000] Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+[    0.000000] Memory: 436532K/458752K available (6048K kernel code, 437K rwdata, 1848K rodata, 380K init, 726K bss, 14028K reserved, 8192K cma-reser)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+[    0.000000]     fixmap  : 0xffc00000 - 0xfff00000   (3072 kB)
+[    0.000000]     vmalloc : 0xdc800000 - 0xff800000   ( 560 MB)
+[    0.000000]     lowmem  : 0xc0000000 - 0xdc000000   ( 448 MB)
+[    0.000000]     modules : 0xbf000000 - 0xc0000000   (  16 MB)
+[    0.000000]       .text : 0xc0008000 - 0xc07be230   (7897 kB)
+[    0.000000]       .init : 0xc07bf000 - 0xc081e000   ( 380 kB)
+[    0.000000]       .data : 0xc081e000 - 0xc088b740   ( 438 kB)
+[    0.000000]        .bss : 0xc088b740 - 0xc09412f0   ( 727 kB)
+[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] NR_IRQS:16 nr_irqs:16 16
+[    0.000029] sched_clock: 32 bits at 1000kHz, resolution 1000ns, wraps every 2147483647500ns
+[    0.000073] clocksource: timer: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275 ns
+[    0.000173] bcm2835: system timer (irq = 27)
+[    0.000479] Console: colour dummy device 80x30
+[    0.000519] Calibrating delay loop... 697.95 BogoMIPS (lpj=3489792)
+[    0.060326] pid_max: default: 32768 minimum: 301
+[    0.060690] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.060718] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.061717] Disabling cpuset control group subsystem
+[    0.061767] Initializing cgroup subsys io
+[    0.061800] Initializing cgroup subsys memory
+[    0.061854] Initializing cgroup subsys devices
+[    0.061886] Initializing cgroup subsys freezer
+[    0.061914] Initializing cgroup subsys net_cls
+[    0.061994] CPU: Testing write buffer coherency: ok
+[    0.062072] ftrace: allocating 20667 entries in 61 pages
+[    0.177056] Setting up static identity map for 0x81c0 - 0x81f8
+[    0.178962] devtmpfs: initialized
+[    0.186426] VFP support v0.3: implementor 41 architecture 1 part 20 variant b rev 5
+[    0.187073] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.188852] pinctrl core: initialized pinctrl subsystem
+[    0.189761] NET: Registered protocol family 16
+[    0.194995] DMA: preallocated 4096 KiB pool for atomic coherent allocations
+[    0.203476] hw-breakpoint: found 6 breakpoint and 1 watchpoint registers.
+[    0.203506] hw-breakpoint: maximum watchpoint size is 4 bytes.
+[    0.203711] Serial: AMBA PL011 UART driver
+[    0.204131] 20201000.uart: ttyAMA0 at MMIO 0x20201000 (irq = 81, base_baud = 0) is a PL011 rev2
+[    0.540965] console [ttyAMA0] enabled
+[    0.545413] bcm2835-mbox 2000b880.mailbox: mailbox enabled
+[    0.593315] bcm2835-dma 20007000.dma: DMA legacy API manager at f2007000, dmachans=0x1
+[    0.603645] SCSI subsystem initialized
+[    0.607727] usbcore: registered new interface driver usbfs
+[    0.613417] usbcore: registered new interface driver hub
+[    0.618917] usbcore: registered new device driver usb
+[    0.634130] raspberrypi-firmware soc:firmware: Attached to firmware from 2016-03-15 14:47
+[    0.645868] clocksource: Switched to clocksource timer
+[    0.702586] FS-Cache: Loaded
+[    0.705989] CacheFiles: Loaded
+[    0.729268] NET: Registered protocol family 2
+[    0.734961] TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.742198] TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.748776] TCP: Hash tables configured (established 4096 bind 4096)
+[    0.755362] UDP hash table entries: 256 (order: 0, 4096 bytes)
+[    0.761280] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+[    0.767957] NET: Registered protocol family 1
+[    0.772908] RPC: Registered named UNIX socket transport module.
+[    0.778915] RPC: Registered udp transport module.
+[    0.783619] RPC: Registered tcp transport module.
+[    0.788357] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.795822] hw perfevents: enabled with armv6_1176 PMU driver, 3 counters available
+[    0.805073] futex hash table entries: 256 (order: -1, 3072 bytes)
+[    0.828093] VFS: Disk quotas dquot_6.6.0
+[    0.832416] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.842305] FS-Cache: Netfs 'nfs' registered for caching
+[    0.849130] NFS: Registering the id_resolver key type
+[    0.854278] Key type id_resolver registered
+[    0.858594] Key type id_legacy registered
+[    0.867039] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
+[    0.874868] io scheduler noop registered
+[    0.878938] io scheduler deadline registered
+[    0.883631] io scheduler cfq registered (default)
+[    0.891161] BCM2708FB: allocated DMA memory 5bc00000
+[    0.896283] BCM2708FB: allocated DMA channel 0 @ f2007000
+[    0.908663] Console: switching to colour frame buffer device 100x30
+[    1.918921] bcm2835-rng 20104000.rng: hwrng registered
+[    1.924328] vc-cma: Videocore CMA driver
+[    1.928319] vc-cma: vc_cma_base      = 0x00000000
+[    1.933023] vc-cma: vc_cma_size      = 0x00000000 (0 MiB)
+[    1.938453] vc-cma: vc_cma_initial   = 0x00000000 (0 MiB)
+[    1.944274] vc-mem: phys_addr:0x00000000 mem_base=0x00000000 mem_size:0x00000000(0 MiB)
+[    1.977473] brd: module loaded
+[    1.993016] loop: module loaded
+[    1.997489] vchiq: vchiq_init_state: slot_zero = 0xdbc80000, is_master = 0
+[    2.006663] Loading iSCSI transport class v2.0-870.
+[    2.012897] usbcore: registered new interface driver smsc95xx
+[    2.018981] dwc_otg: version 3.00a 10-AUG-2012 (platform bus)
+[    2.225264] Core Release: 2.80a
+[    2.228522] Setting default values for core params
+[    2.233353] Finished setting default values for core params
+[    2.439296] Using Buffer DMA mode
+[    2.442624] Periodic Transfer Interrupt Enhancement - disabled
+[    2.448489] Multiprocessor Interrupt Enhancement - disabled
+[    2.454059] OTG VER PARAM: 0, OTG VER FLAG: 0
+[    2.458507] Dedicated Tx FIFOs mode
+[    2.462489] WARN::dwc_otg_hcd_init:1047: FIQ DMA bounce buffers: virt = 0xdbc14000 dma = 0x5bc14000 len=9024
+[    2.472402] FIQ FSM acceleration enabled for :
+[    2.472402] Non-periodic Split Transactions
+[    2.472402] Periodic Split Transactions
+[    2.472402] High-Speed Isochronous Endpoints
+[    2.472402] Interrupt/Control Split Transaction hack enabled
+[    2.494864] WARN::hcd_init_fiq:413: FIQ on core 0 at 0xc04043b4
+[    2.500788] WARN::hcd_init_fiq:414: FIQ ASM at 0xc040468c length 36
+[    2.507064] WARN::hcd_init_fiq:439: MPHI regs_base at 0xdc898000
+[    2.513271] dwc_otg 20980000.usb: DWC OTG Controller
+[    2.518347] dwc_otg 20980000.usb: new USB bus registered, assigned bus number 1
+[    2.525717] dwc_otg 20980000.usb: irq 56, io mem 0x00000000
+[    2.531386] Init: Port Power? op_state=1
+[    2.535307] Init: Power Port (0)
+[    2.538962] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+[    2.545759] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    2.553033] usb usb1: Product: DWC OTG Controller
+[    2.557777] usb usb1: Manufacturer: Linux 4.4.8 dwc_otg_hcd
+[    2.563352] usb usb1: SerialNumber: 20980000.usb
+[    2.569168] hub 1-0:1.0: USB hub found
+[    2.573011] hub 1-0:1.0: 1 port detected
+[    2.578583] usbcore: registered new interface driver usb-storage
+[    2.585093] mousedev: PS/2 mouse device common for all mice
+[    2.590893] i2c /dev entries driver
+[    2.594449] bcm2708_i2c_init : aartyaa 
+[    2.598544] bcm2708_i2c_probe : calling bcm2708_i2c_probe
+[    2.604048] bcm2708_i2c_init : aartyaa regs->start = 20804000, bi->base = dc89a000
+[    2.611708] i2c_add_numbered_adapter : aartyaa
+[    2.616191] __i2c_add_numbered_adapter : aartyaa 
+[    2.620899] i2c_register_adapter : aartyaa calling 
+[    2.626473] i2c_register_adapter : adap->bus_recovery_info = 0
+[    2.632448] i2c_device_register: calling i2c_device_add
+[    2.637737] i2c_device_add : dev = -621351904
+[    2.642123] i2c_device_add : dev->p = 0
+[    2.645997] i2c_device_add : dev->init_name = (null)
+[    2.650958] i2c_device_add : calling dev_name = (null)
+[    2.656126] i2c_device_add : device: '1-0062': i2c_device_add
+[    2.661868] i2c_device_add : kobj = -621128656 
+[    2.666456] i2c_device_add : kobject_add error = 0 
+[    2.671330] i2c_device_add : platform_notify = 0
+[    2.676215] i2c_device_add : device_create_file error = 0 
+[    2.681718] i2c_device_add : device_add_class_symlinks = 0 
+[    2.687369] i2c_device_add : device_add_attrs = 0 
+[    2.692162] i2c_bus_add_device : bus = -1064877136
+[    2.696986] bus: 'i2c': add device 1-0062
+[    2.700994] i2c_bus_add_device : device_add_attrs error = 0
+[    2.706617] i2c_bus_add_device : device_add_groups error = 0
+[    2.712347] i2c_bus_add_device : sysfs_create_link error = 0
+[    2.718070] i2c_device_add : bus_add_device = 0 
+[    2.722745] i2c_device_add : dpm_sysfs_add = 0 
+[    2.727313] i2c_device_add : falied device_pm_add
+[    2.732176] bcm2708_i2c 20804000.i2c: BSC1 Controller at 0x20804000 (irq 77) (baudrate 100000)
+[    2.742252] bcm2835-cpufreq: min=700000 max=700000
+[    2.747537] sdhci: Secure Digital Host Controller Interface driver
+[    2.753721] sdhci: Copyright(c) Pierre Ossman
+[    2.758638] sdhost: log_buf @ dbc13000 (5bc13000)
+[    2.803907] Indeed it is in host mode hprt0 = 00021501
+[    2.906200] mmc0: sdhost-bcm2835 loaded - DMA enabled (>1)
+[    2.912138] sdhci-pltfm: SDHCI platform and OF driver helper
+[    2.939641] ledtrig-cpu: registered to indicate activity on CPUs
+[    2.946001] hidraw: raw HID events driver (C) Jiri Kosina
+[    2.951816] usbcore: registered new interface driver usbhid
+[    2.957464] usbhid: USB HID core driver
+[    2.968469] brcm,aartyaa_lcd: probe of 1-0062 failed with error -1
+[    2.976359] Initializing XFRM netlink socket
+[    2.980780] NET: Registered protocol family 17
+[    2.985499] Key type dns_resolver registered
+[    2.996024] usb 1-1: new high-speed USB device number 2 using dwc_otg
+[    3.002718] Indeed it is in host mode hprt0 = 00001101
+[    3.069158] registered taskstats version 1
+[    3.073704] vc-sm: Videocore shared memory driver
+[    3.078747] [vc_sm_connected_init]: start
+[    3.084113] [vc_sm_connected_init]: end - returning 0
+[    3.090042] of_cfs_init
+[    3.092671] of_cfs_init: OK
+[    3.102219] uart-pl011 20201000.uart: no DMA platform data
+[    3.107985] mmc0: host does not support reading read-only switch, assuming write-enable
+[    3.116342] Waiting for root device /dev/mmcblk0p2...
+[    3.121763] mmc0: new high speed SDHC card at address 0007
+[    3.128551] mmcblk0: mmc0:0007 SL16G 14.5 GiB 
+[    3.135140]  mmcblk0: p1 p2
+[    3.226807] VFS: Cannot open root device "mmcblk0p2" or unknown-block(179,2): error -19
+[    3.234851] Please append a correct "root=" boot option; here are the available partitions:
+[    3.243297] 0100            4096 ram0  (driver?)
+[    3.248096] 0101            4096 ram1  (driver?)
+[    3.252748] 0102            4096 ram2  (driver?)
+[    3.257456] 0103            4096 ram3  (driver?)
+[    3.262118] 0104            4096 ram4  (driver?)
+[    3.266810] 0105            4096 ram5  (driver?)
+[    3.271477] 0106            4096 ram6  (driver?)
+[    3.276168] 0107            4096 ram7  (driver?)
+[    3.280821] 0108            4096 ram8  (driver?)
+[    3.285476] 0109            4096 ram9  (driver?)
+[    3.290174] 010a            4096 ram10  (driver?)
+[    3.294915] 010b            4096 ram11  (driver?)
+[    3.299701] 010c            4096 ram12  (driver?)
+[    3.304440] 010d            4096 ram13  (driver?)
+[    3.309233] 010e            4096 ram14  (driver?)
+[    3.313978] 010f            4096 ram15  (driver?)
+[    3.318769] b300        15159296 mmcblk0  driver: mmcblk
+[    3.324116]   b301           61440 mmcblk0p1 8f1eafaf-01
+[    3.329503]   b302        15093760 mmcblk0p2 8f1eafaf-02
+[    3.334855] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,2)
+[    3.343294] CPU: 0 PID: 1 Comm: swapper Not tainted 4.4.8 #38
+[    3.349030] Hardware name: BCM2708
+[    3.352492] [<c0016924>] (unwind_backtrace) from [<c00138b0>] (show_stack+0x20/0x24)
+[    3.360248] [<c00138b0>] (show_stack) from [<c02e0e2c>] (dump_stack+0x20/0x28)
+[    3.367481] [<c02e0e2c>] (dump_stack) from [<c00d5e78>] (panic+0x90/0x1f8)
+[    3.374372] [<c00d5e78>] (panic) from [<c07c0348>] (mount_block_root+0x1ac/0x264)
+[    3.381861] [<c07c0348>] (mount_block_root) from [<c07c05fc>] (mount_root+0x100/0x12c)
+[    3.389781] [<c07c05fc>] (mount_root) from [<c07c0794>] (prepare_namespace+0x16c/0x1d0)
+[    3.397788] [<c07c0794>] (prepare_namespace) from [<c07bff4c>] (kernel_init_freeable+0x214/0x260)
+[    3.406662] [<c07bff4c>] (kernel_init_freeable) from [<c056e614>] (kernel_init+0x18/0xfc)
+[    3.414845] [<c056e614>] (kernel_init) from [<c000f588>] (ret_from_fork+0x14/0x2c)
+[    3.422417] ---[ end Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,2)
+[    5.234790] random: nonblocking pool is initialized
+
+

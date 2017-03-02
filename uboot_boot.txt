@@ -1,0 +1,85 @@
+BOOTING KERNEL WITH U-BOOT
+
+
+========================================================================
+U-BOOT
+========================================================================
+	
+	1 . compile u-boot for rPI1 
+	====================================================================
+		make mrproper
+		make distclean
+		make clean
+	
+		export KERNEL=kernel
+		export UBOOT=u-boot.bin
+		#make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- rpi_defconfig
+		make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j8 -s  
+		
+		sudo mount /dev/sdb1 /mnt/fat32
+		sudo mount /dev/sdb2 /mnt/ext4
+
+		sudo cp $UBOOT /mnt/fat32/
+			
+		echo "kernel=u-boot.bin" > /mnt/fat32/config.txt	
+
+		sudo umount /mnt/fat32
+		sudo umount /mnt/ext4
+
+	Note : take backup of config.txt.
+	
+	
+	2 . cmdline bootargs 
+	====================================================================
+		
+		u-boot> setenv fdt_addr_r 0x00000100
+		U-Boot> setenv pxefile_addr_r 0x00100000
+		U-Boot> setenv kernel_addr_r 0x01000000 
+		U-Boot> setenv scriptaddr 0x02000000   
+		U-Boot> setenv ramdisk_addr_r 0x02100000   
+		
+		U-Boot> setenv bootargs "earlyprintk console=ttyAMA0 console=tty1
+		    root=/dev/mmcblk0p2 rootfstype=ex4 rootwait noinitrd "
+		
+		U-Boot> setenv fdtfile bcm2708-rpi-b.dtb
+		U-Boot> setenv machid 0xc42
+		U-Boot> saveenv 
+
+		U-Boot> fatload mmc 0:1 ${kernel_addr_r} kernel.img
+		U-Boot> fatload mmc 0:1 ${fdt_addr_r} ${fdtfile}   
+		U-Boot> bootz ${kernel_addr_r} - ${fdt_addr_r}
+
+========================================================================
+KERNEL
+========================================================================
+	
+	1 . compilation
+	====================================================================
+		make mrproper
+		make distclean
+		make clean
+		export KERNEL=kernel
+		make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcmrpi_defconfig
+		make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs -j8
+		
+		sudo mount /dev/sdb1 /mnt/fat32
+		sudo mount /dev/sdb2 /mnt/ext4
+
+		sudo cp /mnt/fat32/$KERNEL.img /mnt/fat32/$KERNEL-backup.img
+		sudo scripts/mkknlimg arch/arm/boot/zImage /mnt/fat32/$KERNEL.img
+		sudo cp arch/arm/boot/dts/*.dtb /mnt/fat32/
+		sudo cp arch/arm/boot/dts/overlays/*.dtb* /mnt/fat32/overlays/
+		sudo cp arch/arm/boot/dts/overlays/README /mnt/fat32/overlays/
+		sudo umount /mnt/fat32
+		sudo umount /mnt/ext4
+
+
+Refference :
+========================================================================
+	http://wiki.beyondlogic.org/index.php?title=Raspberry_Pi_Building_Mainline_Kernel
+	http://elinux.org/RPi_U-Boot
+	https://www.raspberrypi.org/forums/viewtopic.php?t=157391&p=1024915
+	https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=112313
+
+*	https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=108217
+*	https://blog.night-shade.org.uk/2015/05/booting-a-raspberry-pi2-with-u-boot-and-hyp-enabled/
