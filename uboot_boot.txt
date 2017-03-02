@@ -73,6 +73,13 @@ KERNEL
 		sudo umount /mnt/fat32
 		sudo umount /mnt/ext4
 
+CONNECTIONS : UART
+========================================================================
+	
+	1 . RPI GND => (pin 6)  (upper pin 3) => FTDI GND (pin 1) blk.
+	2 . RPI VCC(GPIO 15)(upper pin 2) => FTDI VCC (pin 4) RED.
+	3 . RPI RX(GPIO 15)	(upper pin 5) => FTDI TX (pin 4) Orange.
+	3 . RPI TX(GPIO 14)	(upper pin 4) => FTDI RX (pin 5) Orange.
 
 Refference :
 ========================================================================
